@@ -1,0 +1,40 @@
+.dashboard-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 16px;
+  
+    .header {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 16px;
+    }
+  
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+  
+      table {
+        width: 100%;
+        min-width: 600px;
+  
+        th.mat-header-cell, td.mat-cell {
+          text-align: center;
+          padding: 12px;
+        }
+  
+        th.mat-header-cell {
+          font-weight: bold;
+        }
+  
+        .mat-column-actions {
+          button {
+            margin: 0 4px;
+          }
+        }
+      }
+  
+      mat-paginator {
+        margin-top: 16px;
+      }
+    }
+  }

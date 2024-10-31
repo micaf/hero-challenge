@@ -1,0 +1,21 @@
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+  }
+  
+  .example-element-row {
+    cursor: pointer;
+    &:hover {
+      background-color: #f5f5f5;
+    }
+  }
+  
+  .example-detail-row {
+    background-color: #f9f9f9;
+  }
+  
+  .example-element-detail {
+    padding: 16px;
+    border-top: 1px solid #e0e0e0;
+  }
+  
