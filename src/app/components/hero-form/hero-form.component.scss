@@ -1,16 +1,49 @@
-form {
+$padding: 24px;
+$gap: 20px;
+$button-gap: 12px;
+
+.hero-form-container {
+  padding: $padding;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  max-width: 400px;
-  margin: auto;
-}
+  gap: $gap;
 
-mat-form-field {
-  width: 100%;
-}
+  .form-row {
+    display: flex;
+    gap: $gap;
+    
+    &.full-width {
+      flex-direction: column;
+    }
 
-button[type="submit"] {
-  align-self: flex-end;
-  margin-top: 16px;
+    .form-field {
+      flex: 1;
+
+      &.full-width {
+        width: 100%;
+      }
+
+      .mat-form-field {
+        margin: 8px 0;
+      }
+    }
+
+    .radio-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      
+      mat-radio-group {
+        display: flex;
+        flex-direction: row;
+        gap: 16px;
+      }
+    }
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: $button-gap;
+  }
 }

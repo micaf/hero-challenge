@@ -17,7 +17,7 @@
         <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef> Acciones </th>
             <td mat-cell *matCellDef="let element">
-                <button mat-icon-button (click)="editHero(element)">
+                <button mat-icon-button (click)="openEditHero($event,element)">
                     <mat-icon>edit</mat-icon>
                 </button>
                 <button mat-icon-button color="warn" (click)="openDeleteConfirmation($event, element.id)">
@@ -45,12 +45,6 @@
                     <p><strong>Género:</strong> {{ element.gender }}</p>
                     <p><strong>Poderes:</strong> {{ element.powerNames?.join(', ') }}</p>
                     <p><strong>Equipos:</strong> {{ element.teamNames?.join(', ') }}</p>
-                    <p><strong>Habilidades Únicas:</strong></p>
-                    <ul>
-                        <li *ngFor="let ability of element.uniqueAbilities">
-                            <strong>{{ ability.abilityName }}:</strong> {{ ability.description }}
-                        </li>
-                    </ul>
                 </div>
             </td>
         </ng-container>

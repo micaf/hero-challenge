@@ -1,56 +1,67 @@
 import { Injectable } from '@angular/core';
 import { BaseHero } from '../models/hero.model';
-import { MOCK_HEROES } from '../mocks/mock-heroes';
-import { Observable, of, throwError } from 'rxjs';
-import { catchError, delay, tap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { catchError, delay, map, tap } from 'rxjs/operators';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HeroService {
-  private heroes: BaseHero[] = MOCK_HEROES;
+  private heroesUrl = 'api/heroes';
 
-  constructor() {}
+  httpOptions = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  };
+
+  constructor(private http: HttpClient) { }
 
   /**
    * Obtener todos los héroes.
    */
+  /** GET heroes from the server */
   getHeroes(): Observable<BaseHero[]> {
-    return of(this.heroes).pipe(
-      delay(500), // Simula un retraso de red
-      tap(() => console.log('Héroes obtenidos')),
-      catchError(this.handleError<BaseHero[]>('getHeroes', []))
-    );
+    return this.http.get<BaseHero[]>(this.heroesUrl)
+      .pipe(
+        tap(_ => console.log('fetched heroes')),
+        catchError(this.handleError<BaseHero[]>('getHeroes', []))
+      );
   }
 
+
   /**
-   * Obtener un héroe por su ID.
-   * @param id Identificador del héroe.
+   * Obtener un héroe específico por ID.
+   * @param id ID del héroe.
    */
   getHero(id: number): Observable<BaseHero | undefined> {
-    const hero = this.heroes.find((h) => h.id === id);
-    return of(hero).pipe(
+    const url = `${this.heroesUrl}/${id}`;
+    return this.http.get<BaseHero>(url).pipe(
       delay(300),
       tap(() => console.log(`Héroe obtenido id=${id}`)),
       catchError(this.handleError<BaseHero>(`getHero id=${id}`))
     );
   }
 
+
   /**
-   * Buscar héroes por nombre o alias.
-   * @param term Término de búsqueda.
-   */
+     * Buscar héroes por nombre o alias.
+     * @param term Término de búsqueda.
+     */
   searchHeroes(term: string): Observable<BaseHero[]> {
     if (!term.trim()) {
+      // Si no hay término de búsqueda, retornar un array vacío.
       return of([]);
     }
-    const results = this.heroes.filter(
-      (hero) =>
-        hero.name.toLowerCase().includes(term.toLowerCase()) ||
-        (hero.alias && hero.alias.toLowerCase().includes(term.toLowerCase()))
-    );
-    return of(results).pipe(
+
+    // Construcción de la URL para la búsqueda
+    const url = `${this.heroesUrl}?name=${term}&alias=${term}`;
+    return this.http.get<BaseHero[]>(url).pipe(
       delay(400),
+      map((heroes) => heroes.filter(
+        hero =>
+          hero.name.toLowerCase().includes(term.toLowerCase()) ||
+          (hero.alias && hero.alias.toLowerCase().includes(term.toLowerCase()))
+      )),
       tap((x) =>
         x.length
           ? console.log(`Héroes encontrados matching "${term}"`)
@@ -60,15 +71,40 @@ export class HeroService {
     );
   }
 
+  /** POST: add a new hero to the server */
+  addHero(hero: BaseHero): Observable<BaseHero> {
+    return this.http.post<BaseHero>(this.heroesUrl, hero, this.httpOptions).pipe(
+      tap((newHero: BaseHero) => console.log(`added hero w/ id=${newHero.id}`)),
+      catchError(this.handleError<BaseHero>('addHero'))
+    );
+  }
+
+  /** DELETE: delete the hero from the server */
+  deleteHero(id: number): Observable<BaseHero> {
+    const url = `${this.heroesUrl}/${id}`;
+
+    return this.http.delete<BaseHero>(url, this.httpOptions).pipe(
+      tap(_ => console.log(`deleted hero id=${id}`)),
+      catchError(this.handleError<BaseHero>('deleteHero'))
+    );
+  }
+
+  /** PUT: update the hero on the server */
+  updateHero(hero: BaseHero): Observable<any> {
+    return this.http.put(this.heroesUrl, hero, this.httpOptions).pipe(
+      tap(_ => console.log(`updated hero id=${hero.id}`)),
+      catchError(this.handleError<any>('updateHero'))
+    );
+  }
+
   /**
-   * Manejo de errores genérico.
-   * @param operation Nombre de la operación.
-   * @param result Resultado por defecto.
+   * Manejo de errores.
+   * @param operation Operación donde ocurrió el error.
+   * @param result Resultado opcional para devolver en caso de error.
    */
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       console.error(`${operation} failed: ${error.message}`);
-      // Aquí podrías implementar lógica adicional, como notificaciones al usuario
       return of(result as T);
     };
   }

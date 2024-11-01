@@ -7,7 +7,6 @@ import { AppRoutingModule } from './app-routing.module';
 // Componentes
 import { AppComponent } from './app.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { HeroFormComponent } from './components/hero-form/hero-form.component';
 
 // Angular Material
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -23,6 +22,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { HttpClientModule, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { InMemoryDataService } from './services/in-memory-data.service';
 
 @NgModule({
     imports: [
@@ -31,6 +33,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
         FormsModule,
         ReactiveFormsModule,
         AppRoutingModule,
+        HttpClientModule,
+        HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, { delay: 500 }),
         MatToolbarModule,
         MatButtonModule,
         MatSidenavModule,
@@ -46,9 +50,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     ],
     declarations: [
         AppComponent,
-        DashboardComponent,
-        HeroFormComponent
+        DashboardComponent
     ],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
+    providers:[]
 })
 export class AppModule { }

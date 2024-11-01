@@ -1,22 +1,36 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { ExtendedHero } from '../../models/hero.model';
-import { Gender, PowerType } from '../../models/enum'; // Importa los enums
-
+import { Gender, PowerType, SuperPowers, TeamType } from '../../models/enum';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import {MatRadioModule} from '@angular/material/radio';
 @Component({
-  selector: 'app-hero-form',
+  selector: 'app-hero-form-modal',
+  standalone: true,
+  imports: [CommonModule, MatDialogModule, MatButtonModule, ReactiveFormsModule, 
+    MatSelectModule,
+    MatOptionModule,
+    MatFormFieldModule, MatInputModule, MatRadioModule],
   templateUrl: './hero-form.component.html',
-  styleUrls: ['./hero-form.component.scss']
+  styleUrls: ['./hero-form.component.scss'],
 })
 export class HeroFormComponent implements OnInit {
-  hero?: ExtendedHero;
-  @Output() formSubmit = new EventEmitter<ExtendedHero>();
-
   heroForm!: FormGroup;
-  genderOptions = Object.values(Gender); // Usa el enum Gender
-  powerTypeOptions = Object.values(PowerType); // Usa el enum PowerType
+  genderOptions = Object.values(Gender);
+  powerTypeOptions = Object.values(SuperPowers);
+  teamTypeOptions = Object.values(TeamType);
 
-  constructor(private fb: FormBuilder) { }
+  constructor(
+    public dialogRef: MatDialogRef<HeroFormComponent>,
+    private fb: FormBuilder,
+    @Inject(MAT_DIALOG_DATA) public hero: ExtendedHero | null
+  ) { }
 
   ngOnInit(): void {
     this.heroForm = this.fb.group({
@@ -24,9 +38,9 @@ export class HeroFormComponent implements OnInit {
       alias: [this.hero?.alias || ''],
       description: [this.hero?.description || '', Validators.required],
       gender: [this.hero?.gender || '', Validators.required],
-      powerType: [this.hero?.powerNames || ''], // Añade el tipo de poder
+      powerNames: [this.hero?.powerNames || ''],
       powersIds: [this.hero?.powersIds || []],
-      teamType: [this.hero?.powerNames || ''], // Añade el team
+      teamNames: [this.hero?.teamNames || ''],
       teamIds: [this.hero?.teamIds || []],
     });
   }
@@ -37,11 +51,11 @@ export class HeroFormComponent implements OnInit {
         ...this.hero,
         ...this.heroForm.value
       };
-      this.formSubmit.emit(heroData);
+      this.dialogRef.close(heroData); // Retorna los datos del formulario al confirmar
     }
   }
 
-  onCancel() {
-
+  onCancel(): void {
+    this.dialogRef.close(null); // Cierra el modal sin realizar cambios
   }
 }

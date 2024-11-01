@@ -45,8 +45,8 @@ export class DashboardComponent implements OnInit {
     this.isLoadingResults = true;
     this.heroService.getHeroes().pipe(
       switchMap((heroes) => {
-        const teamIds = heroes.flatMap(hero => hero.teamIds).filter((id): id is number => id !== undefined);
-        const powerIds = heroes.flatMap(hero => hero.powersIds).filter((id): id is number => id !== undefined);
+        const teamIds = heroes?.flatMap(hero => hero.teamIds).filter((id): id is number => id !== undefined);
+        const powerIds = heroes?.flatMap(hero => hero.powersIds).filter((id): id is number => id !== undefined);
   
         return forkJoin({
           heroes: of(heroes),
@@ -55,6 +55,7 @@ export class DashboardComponent implements OnInit {
         });
       })
     ).subscribe(({ heroes, teams, powers }) => {
+      debugger;
       this.dataSource = new MatTableDataSource(
         heroes.map(hero => ({
           ...hero,
@@ -87,23 +88,17 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  editHero(hero: any) {
+  openEditHero(event: Event, hero: any) {
+    event.stopPropagation();
     const dialogRef = this.dialog.open(HeroFormComponent, {
       width: '400px',
       data: hero || {} // Envía los datos del héroe para editar o un objeto vacío para agregar
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        // Maneja la lógica de guardar el héroe
-        if (result.id) {
-          // Actualiza el héroe existente
+      if (result?.id) {
           this.editHero(result);
-        } else {
-          // Añade un nuevo héroe
-          this.addHero(result);
-        }
-      }
+        } 
     });
   }
 
@@ -123,6 +118,11 @@ export class DashboardComponent implements OnInit {
   }
 
   addHero(hero: any){
+    return
+
+  }
+
+  editHero(hero: any){
     return
 
   }

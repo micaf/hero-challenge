@@ -13,13 +13,7 @@ export const MOCK_HEROES: BaseHero[] = [
     gender: 'M',
     powersIds: [1,3],
     teamIds: [1, 2], // Avengers, Justice League
-    uniqueAbilities: [
-      {
-        abilityName: 'Heat Vision',
-        description: 'Emite rayos de calor desde los ojos.',
-        relatedPowerId: 1, // Super Strength
-      },
-    ],
+   
   },
   {
     id: 2,
@@ -29,13 +23,6 @@ export const MOCK_HEROES: BaseHero[] = [
     gender: 'F',
     powersIds: [1,3],
     teamIds: [1], // Avengers
-    uniqueAbilities: [
-      {
-        abilityName: 'Lasso of Truth',
-        description: 'Una lanza mágica que obliga a decir la verdad.',
-        relatedPowerId: 2, // Telepathy
-      },
-    ],
   },
   {
     id: 3,
@@ -45,13 +32,6 @@ export const MOCK_HEROES: BaseHero[] = [
     gender: 'M',
     powersIds: [3,5],
     teamIds: [2], // Justice League
-    uniqueAbilities: [
-      {
-        abilityName: 'Time Travel',
-        description: 'Capacidad para viajar en el tiempo usando la velocidad.',
-        relatedPowerId: 3, // Flight
-      },
-    ],
   },
   {
     id: 4,
@@ -61,13 +41,6 @@ export const MOCK_HEROES: BaseHero[] = [
     gender: 'F', 
     powersIds: [4,2],
     teamIds: [1], // Avengers
-    uniqueAbilities: [
-      {
-        abilityName: 'Martial Arts Mastery',
-        description: 'Maestría en múltiples formas de artes marciales.',
-        relatedPowerId: 2, // Telepathy
-      },
-    ],
   },
   {
     id: 5,
@@ -77,12 +50,5 @@ export const MOCK_HEROES: BaseHero[] = [
     gender: 'M',
     powersIds: [2,5],
     teamIds: [1, 3], // Avengers, Titans
-    uniqueAbilities: [
-      {
-        abilityName: 'Technopathy',
-        description: 'Control y manipulación de tecnología con la mente.',
-        relatedPowerId: 2, // Telepathy
-      },
-    ],
   },
 ];
