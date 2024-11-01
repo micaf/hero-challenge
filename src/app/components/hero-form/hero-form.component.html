@@ -1,0 +1,37 @@
+<form [formGroup]="heroForm" (ngSubmit)="onSubmit()">
+  <mat-form-field appearance="fill">
+    <mat-label>Name</mat-label>
+    <input matInput formControlName="name" required>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Alias</mat-label>
+    <input matInput formControlName="alias">
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Description</mat-label>
+    <textarea matInput formControlName="description" required></textarea>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Gender</mat-label>
+    <mat-select formControlName="gender" required>
+      <mat-option *ngFor="let gender of genderOptions" [value]="gender">{{ gender }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Power Type</mat-label>
+    <mat-select formControlName="powerType">
+      <mat-option *ngFor="let power of powerTypeOptions" [value]="power">{{ power }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div class="form-actions">
+    <button mat-raised-button color="primary" type="submit" [disabled]="heroForm.invalid">
+      {{ hero ? 'Update Hero' : 'Add Hero' }}
+    </button>
+    <button mat-button (click)="onCancel()">Cancel</button>
+  </div>
+</form>

@@ -19,14 +19,13 @@ export class PowerService {
   }
 
   /**
-   * Obtener un poder por su ID.
-   * @param id Identificador del poder.
+   * Obtener poderes por una lista de IDs.
+   * @param ids Array de identificadores de poderes.
    */
-  getPowerById(id: number): Observable<Power | undefined> {
-    const power = this.powers.find((p) => p.id === id);
-    return of(power);
+  getPowersByIds(ids: number[]): Observable<Power[]> {
+    const teams = this.powers.filter((p) => ids.includes(p.id));
+    return of(teams);
   }
-
   /**
    * Buscar poderes por nombre.
    * @param term Término de búsqueda.

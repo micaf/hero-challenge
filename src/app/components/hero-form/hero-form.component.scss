@@ -1,0 +1,16 @@
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 400px;
+  margin: auto;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+button[type="submit"] {
+  align-self: flex-end;
+  margin-top: 16px;
+}

@@ -47,3 +47,9 @@ export interface BaseHero {
      */
     uniqueAbilities?: UniqueAbilities[];
 }
+
+
+export interface ExtendedHero extends BaseHero {
+    teamNames?: (string | undefined)[];
+    powerNames?: (string | undefined)[];
+  }

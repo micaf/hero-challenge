@@ -1,63 +1,72 @@
-<div class="table-container">
+<mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+<div class="table-container"  *ngIf="!isLoadingResults">
+    <div class="table-actions">
+        <button mat-raised-button color="primary" (click)="openHeroForm()">
+          Añadir Héroe
+        </button>
+      </div>
     <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8">
-      
-      <!-- Columna: Nombre -->
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef> Nombre </th>
-        <td mat-cell *matCellDef="let hero"> {{ hero.name }} </td>
-      </ng-container>
-  
-      <!-- Columna: Alias -->
-      <ng-container matColumnDef="alias">
-        <th mat-header-cell *matHeaderCellDef> Alias </th>
-        <td mat-cell *matCellDef="let hero"> {{ hero.alias }} </td>
-      </ng-container>
-  
-      <!-- Columna: Descripción -->
-      <ng-container matColumnDef="description">
-        <th mat-header-cell *matHeaderCellDef> Descripción </th>
-        <td mat-cell *matCellDef="let hero"> {{ hero.description }} </td>
-      </ng-container>
-  
-      <!-- Columna de expansión -->
-      <ng-container matColumnDef="expand">
-        <th mat-header-cell *matHeaderCellDef>&nbsp;</th>
-        <td mat-cell *matCellDef="let hero">
-          <button mat-icon-button (click)="expandedElement = expandedElement === hero ? null : hero; $event.stopPropagation()">
-            <mat-icon>{{ expandedElement === hero ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</mat-icon>
-          </button>
-        </td>
-      </ng-container>
-  
-      <!-- Fila de Encabezado -->
-      <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-  
-      <!-- Fila de Datos -->
-      <tr mat-row *matRowDef="let row; columns: columnsToDisplay" 
-          [class.expanded-row]="expandedElement === row"
-          (click)="expandedElement = expandedElement === row ? null : row">
-      </tr>
-  
-      <!-- Fila Expandible con Detalles -->
-      <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" 
-          class="example-detail-row">
-        <td mat-cell *matCellDef="let hero" [attr.colspan]="columnsToDisplay.length">
-          <div class="example-element-detail"
-               [@detailExpand]="hero === expandedElement ? 'expanded' : 'collapsed'">
-            <p><strong>Género:</strong> {{ hero.gender }}</p>
-            <p><strong>Poderes:</strong> {{ hero.powersIds.join(', ') }}</p>
-            <p><strong>Equipos:</strong> {{ hero.teamIds.join(', ') }}</p>
-            <p><strong>Habilidades Únicas:</strong></p>
-            <ul>
-              <li *ngFor="let ability of hero.uniqueAbilities">
-                <strong>{{ ability.abilityName }}:</strong> {{ ability.description }}
-              </li>
-            </ul>
-          </div>
-        </td>
-      </tr>
+
+        <!-- Generación dinámica de columnas usando filteredColumns -->
+        <ng-container *ngFor="let column of filteredColumns" [matColumnDef]="column">
+            <th mat-header-cell *matHeaderCellDef> {{ column | titlecase }} </th>
+            <td mat-cell *matCellDef="let element"> {{ element[column] }} </td>
+        </ng-container>
+
+        <!-- Columna de acciones -->
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> Acciones </th>
+            <td mat-cell *matCellDef="let element">
+                <button mat-icon-button (click)="editHero(element)">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" (click)="openDeleteConfirmation($event, element.id)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+
+        <!-- Columna de expansión -->
+        <ng-container matColumnDef="expand">
+            <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+            <td mat-cell *matCellDef="let element">
+                <button mat-icon-button aria-label="expand row"
+                    (click)="expandedElement = expandedElement === element ? null : element; $event.stopPropagation()">
+                    <mat-icon>{{ expandedElement === element ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+
+        <!-- Columna de detalles expandibles -->
+        <ng-container matColumnDef="expandedDetail">
+            <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length">
+                <div class="example-element-detail"
+                    [@detailExpand]="element === expandedElement ? 'expanded' : 'collapsed'">
+                    <p><strong>Género:</strong> {{ element.gender }}</p>
+                    <p><strong>Poderes:</strong> {{ element.powerNames?.join(', ') }}</p>
+                    <p><strong>Equipos:</strong> {{ element.teamNames?.join(', ') }}</p>
+                    <p><strong>Habilidades Únicas:</strong></p>
+                    <ul>
+                        <li *ngFor="let ability of element.uniqueAbilities">
+                            <strong>{{ ability.abilityName }}:</strong> {{ ability.description }}
+                        </li>
+                    </ul>
+                </div>
+            </td>
+        </ng-container>
+
+        <!-- Fila de encabezado -->
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+
+        <!-- Fila de datos -->
+        <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand" class="example-element-row"
+            [class.example-expanded-row]="expandedElement === element"
+            (click)="expandedElement = expandedElement === element ? null : element">
+        </tr>
+
+        <!-- Fila expandible -->
+        <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
     </table>
-  
+
     <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
-  </div>
-  
+</div>
