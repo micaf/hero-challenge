@@ -1,8 +1,10 @@
-<div class="spinner-wrapper" *ngIf="isLoadingResults">
+<div class="spinner-wrapper" *ngIf="isLoading$ | async; else content">
     <mat-spinner></mat-spinner>
 </div>
 
-<div *ngIf="!isLoadingResults" class="table-container">
-    <app-hero-list [heroes]="heroes" (addHero)="addHero($event)"
-    (editHero)="editHero($event)" (deleteHero)="deleteHero($event)"></app-hero-list>
-</div>
+<ng-template #content>
+    <div  class="table-container">
+        <app-hero-list [heroes]="heroes" (addHero)="addHero($event)"
+        (editHero)="editHero($event)" (deleteHero)="deleteHero($event)"></app-hero-list>
+    </div>
+</ng-template>

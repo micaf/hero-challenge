@@ -1,10 +1,11 @@
-import { AfterViewInit, Component } from '@angular/core';
-import { forkJoin, of, switchMap } from 'rxjs';
+import { AfterViewInit, ChangeDetectorRef, Component } from '@angular/core';
+import { Observable, forkJoin, of, switchMap } from 'rxjs';
 
 import { ExtendedHero } from '../../models/hero.model';
 import { HeroService } from '../../services/hero.service';
 import { TeamService } from '../../services/team.service';
 import { PowerService } from '../../services/power.service';
+import { LoadingService } from '../../services/loading.service';
 
 /**
  * Dashboard component displaying a list of heroes and their respective teams and powers.
@@ -23,7 +24,7 @@ export class DashboardComponent implements AfterViewInit {
   /**
    * Indicates whether the component is loading results.
    */
-  isLoadingResults = true;
+  isLoading$: Observable<boolean>;
 
   /**
    * Initializes services for hero, team, power operations, and dialog management.
@@ -35,7 +36,11 @@ export class DashboardComponent implements AfterViewInit {
     private heroService: HeroService,
     private teamService: TeamService,
     private powerService: PowerService,
-  ) { }
+    private loadingService: LoadingService,
+    private changeDetectorRef: ChangeDetectorRef
+  ) { 
+    this.isLoading$ = this.loadingService.loading$;
+  }
 
   /**
    * Lifecycle hook called after the component's view has been initialized.
@@ -43,6 +48,7 @@ export class DashboardComponent implements AfterViewInit {
    */
   ngAfterViewInit(): void {
     this.getAllHeroes();
+    this.changeDetectorRef.detectChanges();
   }
 
   /**
@@ -50,7 +56,6 @@ export class DashboardComponent implements AfterViewInit {
    * Updates the `heroes` array with the fetched data.
    */
   getAllHeroes() {
-    this.isLoadingResults = true;
     this.heroService.getHeroes().pipe(
       switchMap((heroes) => {
         const teamIds = heroes.flatMap(hero => hero.teamIds).filter((id): id is number => id !== undefined);
@@ -69,12 +74,10 @@ export class DashboardComponent implements AfterViewInit {
           teamNames: hero.teamIds?.map(id => teams.find(team => team.id === id)?.name),
           powerNames: hero.powersIds.map(id => powers.find(power => power.id === id)?.name)
         } as ExtendedHero));
-        this.isLoadingResults = false;
       },
       error: (err) => {
         console.error(err);
         this.heroes = [];
-        this.isLoadingResults = false;
       }
     });
   }
@@ -85,10 +88,8 @@ export class DashboardComponent implements AfterViewInit {
    * @param heroId The ID of the hero to delete.
    */
   deleteHero(heroId: number): void {
-    this.isLoadingResults = true;
     this.heroService.deleteHero(heroId).subscribe(() => {
       this.heroes = this.heroes.filter(h => h.id !== heroId);
-      this.isLoadingResults = false;
     });
   }
 
@@ -97,11 +98,9 @@ export class DashboardComponent implements AfterViewInit {
    * @param hero The hero data to add.
    */
   addHero(hero: any) {
-    this.isLoadingResults = true;
     this.heroService.addHero(hero)
       .subscribe(hero => {
         this.heroes.unshift(hero);
-        this.isLoadingResults = false;
       });
   }
 
@@ -110,10 +109,8 @@ export class DashboardComponent implements AfterViewInit {
    * @param hero The updated hero data.
    */
   editHero(hero: any) {
-    this.isLoadingResults = true;
     this.heroService.updateHero(hero).subscribe(() => {
       this.heroes = [hero, ...this.heroes.filter(h => h.id !== hero.id)];
-      this.isLoadingResults = false;
     });
   }
 }

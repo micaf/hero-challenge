@@ -1,7 +1,7 @@
 import { Power } from '../models/power.model';
 
 /**
- * Datos mock para los superpoderes.
+ * Mock data for powers.
  */
 export const MOCK_POWERS: Power[] = [
   {

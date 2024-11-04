@@ -46,6 +46,7 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { CdkMenuModule } from '@angular/cdk/menu';
 import { DialogModule } from '@angular/cdk/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { UppercaseDirective } from '../directives/uppercase.directive';
 
 @NgModule({
   exports: [
@@ -96,10 +97,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     PortalModule,
     ScrollingModule,
     DialogModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    UppercaseDirective
   ],
   declarations: [
-
+    UppercaseDirective
   ]
 })
 export class MaterialModule { }

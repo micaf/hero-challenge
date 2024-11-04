@@ -1,68 +1,74 @@
 .table-container {
-    width: 100%;
-    overflow-x: auto;
+  width: 100%;
+  overflow-x: auto;
+  padding: 20px;
 
-    .table-actions {
-      display: flex;
-      justify-content: flex-end;
-      margin-bottom: 16px;
-    }
-    
-  }
-  
-  table {
+  .filter-input {
     width: 100%;
+    border-radius: 8px;
   }
   
-  tr.example-detail-row {
-    height: 0;
+  .filter-input .mat-form-field-outline {
+    border-radius: 8px;
   }
-  
-  tr.example-element-row:not(.example-expanded-row):hover {
-    background-color: whitesmoke;
-  }
-  
-  tr.example-element-row:not(.example-expanded-row):active {
-    background-color: #efefef;
-  }
-  
-  .example-element-row td {
-    border-bottom-width: 0;
-    padding: 8px;
-  }
-  
-  .example-expanded-row {
-    &.mat-row {
-      border-top: 1px solid #e0e0e0;
-    }
-  }
-  
-  .example-element-detail {
-    overflow: hidden;
+
+  .table-actions {
     display: flex;
-    flex-direction: column;
-    background-color: #f9f9f9;
+    justify-content: flex-end;
+    margin-bottom: 16px;
   }
-  
-  .example-element-detail p,
-  .example-element-detail ul {
-    margin: 4px 0;
-  }
-  
-  .example-element-detail ul {
-    padding-left: 16px;
-  }
-  
-  .mat-header-cell,
-  .mat-cell {
-    text-align: center;
-    padding: 8px;
-  }
-  
-  .mat-cell .mat-icon-button {
-    margin: 0 4px;
-  }
-  
-  .mat-paginator {
-    margin-top: 16px;
-  }
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background-color: white;
+  margin-bottom: 16px;
+}
+
+.mat-paginator {
+  margin-top: 16px;
+  background-color: #fff;
+  box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1);
+  padding: 8px 16px;
+  border-radius: 8px;
+}
+
+.mat-header-cell, .mat-cell {
+  text-align: center;
+  padding: 8px;
+  border-right: 1px solid #e0e0e0;
+}
+
+.mat-header-cell:last-child, .mat-cell:last-child {
+  border-right: none;
+}
+
+/* Expanded Row Styling */
+tr.example-detail-row {
+  height: 0;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease, height 0s ease 0.3s; /* Delays height change */
+}
+
+/* When the row is expanded, make it visible */
+.example-element-row.example-expanded-row + .example-detail-row {
+  height: auto;
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.example-element-detail {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background-color: #f9f9f9;
+  padding: 8px 16px;
+  border-top: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
+}

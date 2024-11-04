@@ -8,6 +8,8 @@ import { HeroFormComponent } from '../hero-form/hero-form.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { MaterialModule } from '../../shared/material.module';
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { LoadingInterceptor } from '../../services/interceptor/loading-interceptor';
 
 /**
  * Component for displaying a list of heroes in a table format with pagination and filtering capabilities.
@@ -19,14 +21,14 @@ import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confi
     imports: [CommonModule, MaterialModule],
     templateUrl: './hero-list.component.html',
     styleUrls: ['./hero-list.component.scss'],
+    providers: [{ provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true }],
     animations: [
         trigger('detailExpand', [
             state('collapsed', style({ height: '0px', minHeight: '0', visibility: 'hidden' })),
             state('expanded', style({ height: '*', visibility: 'visible' })),
             transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
         ]),
-    ],
-    changeDetection: ChangeDetectionStrategy.OnPush 
+    ]
 })
 export class HeroListComponent implements OnInit {
     /** Columns to display in the table */

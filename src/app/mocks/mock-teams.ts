@@ -1,7 +1,7 @@
 import { Team } from '../models/team.model';
 
 /**
- * Datos mock para los equipos.
+ * Mock data for teams.
  */
 export const MOCK_TEAMS: Team[] = [
   {

@@ -58,8 +58,8 @@ export class HeroFormComponent implements OnInit {
    */
   ngOnInit(): void {
     this.heroForm = this.fb.group({
-      name: [this.hero?.name || '', [Validators.required, Validators.pattern('^[a-zA-Z]+$')]],
-      alias: [this.hero?.alias || '', [Validators.required, Validators.pattern('^[a-zA-Z]+$')]],
+      name: [this.hero?.name || '', [Validators.required, Validators.pattern('^[a-zA-Z ]+$')]],
+      alias: [this.hero?.alias || '', [Validators.required, Validators.pattern('^[a-zA-Z ]+$')]],
       description: [this.hero?.description || ''],
       gender: [this.hero?.gender || '', Validators.required],
       powersIds: [this.hero?.powersIds || [], Validators.required],

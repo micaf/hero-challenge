@@ -96,7 +96,6 @@ describe('DashboardComponent', () => {
 
         expect(heroService.getHeroes).toHaveBeenCalled();
         expect(component.heroes.length).toBe(1);
-        expect(component.isLoadingResults).toBeFalse();
     });
 
     /**
@@ -122,7 +121,6 @@ describe('DashboardComponent', () => {
 
         expect(heroService.addHero).toHaveBeenCalledWith(newHero);
         expect(component.heroes.length).toBe(1);
-        expect(component.isLoadingResults).toBeFalse();
     }));
 
     /**
@@ -150,7 +148,6 @@ describe('DashboardComponent', () => {
 
         expect(heroService.deleteHero).toHaveBeenCalledWith(heroToDeleteId);
         expect(component.heroes.length).toBe(0);
-        expect(component.isLoadingResults).toBeFalse();
     }));
 
     /**
@@ -175,7 +172,6 @@ describe('DashboardComponent', () => {
 
         expect(heroService.updateHero).toHaveBeenCalledWith(editedHero);
         expect(component.heroes[0].name).toBe('Superman Edited');
-        expect(component.isLoadingResults).toBeFalse();
     }));
 
     /**
@@ -191,6 +187,5 @@ describe('DashboardComponent', () => {
 
         expect(console.error).toHaveBeenCalledWith(jasmine.any(Error));
         expect(component.heroes).toEqual([]);
-        expect(component.isLoadingResults).toBeFalse();
     }));
 });
