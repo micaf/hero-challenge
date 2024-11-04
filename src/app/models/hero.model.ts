@@ -1,11 +1,3 @@
-// Interfaz para habilidades únicas
-export interface UniqueAbilities {
-    abilityName: string;
-    description: string;
-    relatedPowerId: number;
-}
-
-
 export interface BaseHero {
     /**
      * Identificador único del héroe.
@@ -20,7 +12,7 @@ export interface BaseHero {
     /**
      * Alias o nombre enmascarado del héroe.
      */
-    alias?: string;
+    alias: string;
 
     /**
      * Descripción detallada del héroe.
@@ -41,9 +33,10 @@ export interface BaseHero {
      * IDs de los equipos a los que pertenece el héroe.
      */
     teamIds?: number[];
-
-    /**
-     * Habilidades únicas del héroe.
-     */
-    uniqueAbilities?: UniqueAbilities[];
 }
+
+
+export interface ExtendedHero extends BaseHero {
+    teamNames?: (string | undefined)[];
+    powerNames?: (string | undefined)[];
+  }
