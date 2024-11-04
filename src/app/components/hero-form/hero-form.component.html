@@ -1,51 +1,74 @@
+<!-- Form for adding or updating hero details, using Angular Reactive Forms -->
 <form [formGroup]="heroForm" (ngSubmit)="onSubmit()" class="hero-form-container">
+  
+  <!-- Row for Name and Alias fields -->
   <div class="form-row">
+    <!-- Name field -->
     <mat-form-field appearance="fill" class="form-field">
       <mat-label>Nombre</mat-label>
       <input matInput formControlName="name" required>
     </mat-form-field>
 
+    <!-- Alias field -->
     <mat-form-field appearance="fill" class="form-field">
       <mat-label>Alias</mat-label>
-      <input matInput formControlName="alias">
+      <input matInput formControlName="alias" required>
     </mat-form-field>
   </div>
 
+  <!-- Row for Description field -->
   <div class="form-row">
     <mat-form-field appearance="fill" class="form-field full-width">
       <mat-label>Descripcion</mat-label>
-      <textarea matInput formControlName="description" required></textarea>
+      <textarea matInput formControlName="description"></textarea>
     </mat-form-field>
   </div>
 
+  <!-- Row for Gender selection as radio buttons -->
   <div class="form-row">
     <div class="form-field radio-group">
       <label>Genero</label>
       <mat-radio-group formControlName="gender">
-        <mat-radio-button *ngFor="let gender of genderOptions" [value]="gender">{{ gender }}</mat-radio-button>
+        <!-- Dynamically generated radio buttons for gender options -->
+        <mat-radio-button *ngFor="let gender of genderOptions" [value]="gender">
+          {{ gender }}
+        </mat-radio-button>
       </mat-radio-group>
     </div>
   </div>
 
+  <!-- Row for selecting Powers and Teams from dropdown lists -->
   <div class="form-row">
+    <!-- Powers selection field -->
     <mat-form-field appearance="fill" class="form-field">
       <mat-label>Poder</mat-label>
-      <mat-select formControlName="powerNames" multiple>
-        <mat-option *ngFor="let power of powerTypeOptions" [value]="power">{{ power.name }}</mat-option>
+      <mat-select formControlName="powersIds" multiple>
+        <!-- Dropdown options for powers, populated from powerTypeOptions -->
+        <mat-option *ngFor="let power of powerTypeOptions" [value]="power.id">
+          {{ power.name }}
+        </mat-option>
       </mat-select>
     </mat-form-field>
+
+    <!-- Teams selection field -->
     <mat-form-field appearance="fill" class="form-field">
       <mat-label>Equipo</mat-label>
-      <mat-select formControlName="teamNames" multiple>
-        <mat-option *ngFor="let team of teamTypeOptions" [value]="team">{{ team }}</mat-option>
+      <mat-select formControlName="teamIds" multiple>
+        <!-- Dropdown options for teams, populated from teamTypeOptions -->
+        <mat-option *ngFor="let team of teamTypeOptions" [value]="team.id">
+          {{ team.name }}
+        </mat-option>
       </mat-select>
     </mat-form-field>
   </div>
 
+  <!-- Action buttons for submitting or cancelling the form -->
   <div class="form-actions">
+    <!-- Submit button, dynamically labeled based on form mode (Add or Update) -->
     <button mat-raised-button color="primary" type="submit" [disabled]="heroForm.invalid">
       {{ hero ? 'Actualizar Heroe' : 'Agregar Heroe' }}
     </button>
+    <!-- Cancel button to close the form without saving changes -->
     <button mat-button (click)="onCancel()">Cancelar</button>
   </div>
 </form>

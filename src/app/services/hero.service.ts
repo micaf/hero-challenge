@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BaseHero } from '../models/hero.model';
 import { Observable, of } from 'rxjs';
 import { catchError, delay, map, tap } from 'rxjs/operators';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -17,17 +17,17 @@ export class HeroService {
   constructor(private http: HttpClient) { }
 
   /**
-   * Obtener todos los héroes.
+   * Obtener héroes desde el servidor, considerando índice de página y tamaño.
+   * @param pageIndex Índice de la página.
+   * @param pageSize Tamaño de la página.
    */
-  /** GET heroes from the server */
-  getHeroes(): Observable<BaseHero[]> {
-    return this.http.get<BaseHero[]>(this.heroesUrl)
-      .pipe(
-        tap(_ => console.log('fetched heroes')),
-        catchError(this.handleError<BaseHero[]>('getHeroes', []))
-      );
-  }
+  getHeroes(pageIndex: number = 0, pageSize: number = 5): Observable<BaseHero[]> {
+    const params = new HttpParams()
+      .set('pageIndex', pageIndex.toString())
+      .set('pageSize', pageSize.toString());
 
+    return this.http.get<BaseHero[]>(this.heroesUrl);
+  }
 
   /**
    * Obtener un héroe específico por ID.

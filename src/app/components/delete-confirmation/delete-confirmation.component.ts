@@ -2,6 +2,12 @@ import { Component } from '@angular/core';
 import { MatDialogRef, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 
+/**
+ * Component for displaying a confirmation dialog to delete an item.
+ * 
+ * The `DeleteConfirmationComponent` provides users with options to confirm or cancel
+ * the deletion of an item. It includes two actions: "Cancelar" and "Eliminar".
+ */
 @Component({
   selector: 'app-delete-confirmation',
   standalone: true,
@@ -16,12 +22,24 @@ import { MatButtonModule } from '@angular/material/button';
   `
 })
 export class DeleteConfirmationComponent {
-  constructor(public dialogRef: MatDialogRef<DeleteConfirmationComponent>) {}
 
+  /**
+   * Creates an instance of DeleteConfirmationComponent.
+   * 
+   * @param dialogRef - Reference to the dialog opened to manage dialog result.
+   */
+  constructor(public dialogRef: MatDialogRef<DeleteConfirmationComponent>) { }
+
+  /**
+   * Confirms the deletion by closing the dialog with a true result.
+   */
   onConfirm(): void {
     this.dialogRef.close(true); // Confirma eliminación
   }
 
+  /**
+   * Cancels the deletion by closing the dialog with a false result.
+   */
   onCancel(): void {
     this.dialogRef.close(false); // Cancela eliminación
   }

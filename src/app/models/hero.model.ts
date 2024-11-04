@@ -12,7 +12,7 @@ export interface BaseHero {
     /**
      * Alias o nombre enmascarado del héroe.
      */
-    alias?: string;
+    alias: string;
 
     /**
      * Descripción detallada del héroe.
