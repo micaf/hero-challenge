@@ -723,7 +723,6 @@ export class HeroFormComponent implements OnInit {
         const power &#x3D; this.powerTypeOptions.find((p: any) &#x3D;&gt; p.id &#x3D;&#x3D;&#x3D; id);
         return power ? power.name : &#x27;&#x27;;
       });
-      debugger;
       const selectedTeams &#x3D; this.heroForm.get(&#x27;teamIds&#x27;)?.value || [];
       const teamNames &#x3D; selectedTeams.map((id: number) &#x3D;&gt; {
         const team &#x3D; this.teamTypeOptions.find((p: any) &#x3D;&gt; p.id &#x3D;&#x3D;&#x3D; id);

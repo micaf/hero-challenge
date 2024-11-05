@@ -9,7 +9,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MaterialModule } from '../../shared/material.module';
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { LoadingInterceptor } from '../../services/interceptor/loading-interceptor';
 
 
 @Component({
@@ -18,7 +17,7 @@ import { LoadingInterceptor } from '../../services/interceptor/loading-intercept
     imports: [CommonModule, MaterialModule],
     templateUrl: './hero-list.component.html',
     styleUrls: ['./hero-list.component.scss'],
-    providers: [{ provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true }],
+    providers: [],
     animations: [
         trigger('detailExpand', [
             state('collapsed', style({ height: '0px', minHeight: '0', visibility: 'hidden' })),
