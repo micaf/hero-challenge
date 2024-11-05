@@ -52,10 +52,9 @@ tr.example-detail-row {
   height: 0;
   visibility: hidden;
   opacity: 0;
-  transition: opacity 0.3s ease, height 0s ease 0.3s; /* Delays height change */
+  transition: opacity 0.3s ease, height 0s ease 0.3s; 
 }
 
-/* When the row is expanded, make it visible */
 .example-element-row.example-expanded-row + .example-detail-row {
   height: auto;
   visibility: visible;

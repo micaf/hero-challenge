@@ -11,9 +11,7 @@ import { Team } from '../../models/team.model';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from '../../shared/material.module';
 
-/**
- * Unit tests for the HeroFormComponent.
- */
+
 describe('HeroFormComponent', () => {
   let component: HeroFormComponent;
   let fixture: ComponentFixture<HeroFormComponent>;
@@ -21,7 +19,7 @@ describe('HeroFormComponent', () => {
   let teamService: jasmine.SpyObj<TeamService>;
   let dialogRef: jasmine.SpyObj<MatDialogRef<HeroFormComponent>>;
 
-  // Mock data for powers, teams, and a sample hero
+
   const mockPowers: Power[] = [
     { id: 1, name: 'Super Strength', description: 'Ability to exert extraordinary physical force.' },
     { id: 2, name: 'Telepathy', description: 'Ability to read and communicate thoughts.' },
@@ -42,9 +40,6 @@ describe('HeroFormComponent', () => {
     teamIds: [1]
   };
 
-  /**
-   * Sets up the testing module with required providers and spies on the services.
-   */
   beforeEach(waitForAsync(() => {
     const powerServiceSpy = jasmine.createSpyObj('PowerService', ['getPowers']);
     const teamServiceSpy = jasmine.createSpyObj('TeamService', ['getTeams']);
@@ -52,7 +47,7 @@ describe('HeroFormComponent', () => {
 
     TestBed.configureTestingModule({
       imports: [
-        HeroFormComponent,  // Import the standalone component here
+        HeroFormComponent, 
         ReactiveFormsModule,
         MaterialModule,
         BrowserAnimationsModule
@@ -71,9 +66,7 @@ describe('HeroFormComponent', () => {
     dialogRef = TestBed.inject(MatDialogRef) as jasmine.SpyObj<MatDialogRef<HeroFormComponent>>;
   }));
 
-  /**
-   * Initializes the component instance and sets up mock data for power and team services.
-   */
+
   beforeEach(() => {
     powerService.getPowers.and.returnValue(of(mockPowers));
     teamService.getTeams.and.returnValue(of(mockTeams));
@@ -83,16 +76,10 @@ describe('HeroFormComponent', () => {
     fixture.detectChanges();
   });
 
-  /**
-   * Test to verify component creation.
-   */
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  /**
-   * Test to check if the form initializes with provided hero data.
-   */
   it('should initialize the form with provided hero data', () => {
     expect(component.heroForm.value).toEqual({
       name: mockHero.name,
@@ -104,9 +91,6 @@ describe('HeroFormComponent', () => {
     });
   });
 
-  /**
-   * Test to ensure powers and teams load correctly on initialization.
-   */
   it('should load powers and teams on initialization', fakeAsync(() => {
     component.ngOnInit();
     tick();
@@ -115,9 +99,6 @@ describe('HeroFormComponent', () => {
     expect(component.teamTypeOptions).toEqual(mockTeams);
   }));
 
-  /**
-   * Test to validate that the name and alias fields only allow letters without spaces.
-   */
   it('should validate that name and alias only allow letters without spaces', () => {
     const nameControl = component.heroForm.get('name');
     const aliasControl = component.heroForm.get('alias');
@@ -137,9 +118,6 @@ describe('HeroFormComponent', () => {
     expect(aliasControl?.valid).toBeTrue();
   });
 
-  /**
-   * Test to verify that the onSubmit method closes the dialog with hero data if the form is valid.
-   */
   it('should call onSubmit and close the dialog with hero data if form is valid', () => {
     component.heroForm.setValue({
       name: 'BruceWayne',
@@ -160,20 +138,13 @@ describe('HeroFormComponent', () => {
     }));
   });
 
-  /**
-   * Test to ensure the dialog does not close if the form is invalid.
-   */
   it('should not close the dialog if form is invalid', () => {
-    component.heroForm.controls['name'].setValue('');  // Set name to invalid
+    component.heroForm.controls['name'].setValue('');  
     component.onSubmit();
     expect(dialogRef.close).not.toHaveBeenCalled();
   });
 
-  /**
-   * Test to verify that onCancel method closes the dialog with null.
-   */
   it('should call onCancel and close the dialog with null', () => {
-    component.onCancel();
     expect(dialogRef.close).toHaveBeenCalledWith(null);
   });
 });

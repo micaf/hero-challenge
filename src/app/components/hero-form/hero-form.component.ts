@@ -10,12 +10,6 @@ import { TeamService } from '../../services/team.service';
 import { MaterialModule } from '../../shared/material.module';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
-/**
- * Component for displaying a form to add or edit a hero.
- * 
- * This component displays a form with fields for hero information,
- * allowing users to input the name, alias, description, gender, powers, and teams of a hero.
- */
 @Component({
   selector: 'app-hero-form-modal',
   standalone: true,
@@ -24,26 +18,20 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./hero-form.component.scss'],
 })
 export class HeroFormComponent implements OnInit {
-  /** Form group for the hero form */
   heroForm!: FormGroup;
 
-  /** Options for the gender field, based on the `Gender` enum */
   genderOptions = Object.values(Gender);
 
-  /** Available team options populated from the service */
   teamTypeOptions: Team[] = [];
 
-  /** Available power options populated from the service */
   powerTypeOptions: Power[] = [];
 
   /**
-   * Constructor for HeroFormComponent.
-   *
-   * @param dialogRef - Reference to the open dialog managing this component.
-   * @param fb - FormBuilder for managing reactive forms.
-   * @param powerService - Service for retrieving available powers.
-   * @param teamService - Service for retrieving available teams.
-   * @param hero - Data of the hero being edited, if any.
+   * @param dialogRef
+   * @param fb 
+   * @param powerService 
+   * @param teamService 
+   * @param hero
    */
   constructor(
     public dialogRef: MatDialogRef<HeroFormComponent>,
@@ -53,9 +41,6 @@ export class HeroFormComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public hero: ExtendedHero | null
   ) { }
 
-  /**
-   * Initializes the component by creating the form and loading available powers and teams.
-   */
   ngOnInit(): void {
     this.heroForm = this.fb.group({
       name: [this.hero?.name || '', [Validators.required, Validators.pattern('^[a-zA-Z ]+$')]],
@@ -75,10 +60,6 @@ export class HeroFormComponent implements OnInit {
     });
   }
 
-  /**
-   * Submits the form data if the form is valid.
-   * Maps the selected power and team IDs to their names and closes the dialog with the hero data.
-   */
   onSubmit(): void {
     if (this.heroForm.valid) {
       const selectedPowers = this.heroForm.get('powersIds')?.value || [];
@@ -99,17 +80,14 @@ export class HeroFormComponent implements OnInit {
         powersIds: selectedPowers,
         powerNames: powerNames,
         teamIds: selectedTeams,
-        teamrNames: teamNames,
+        teamNames: teamNames,
       };
 
-      this.dialogRef.close(heroData);
+      this.dialogRef.close({action: heroData.id ? 'edit' : 'add', data: heroData});
     }
   }
 
-  /**
-   * Cancels the form and closes the dialog without making any changes.
-   */
   onCancel(): void {
-    this.dialogRef.close(null); // Cierra el modal sin realizar cambios
+    this.dialogRef.close({action:'close', data: null}); 
   }
 }
