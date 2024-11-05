@@ -1,14 +1,10 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
 import { HeroListComponent } from './hero-list.component';
-import { BaseHero, ExtendedHero } from '../../models/hero.model';
+import { ExtendedHero } from '../../models/hero.model';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from '../../shared/material.module';
-import { HeroFormComponent } from '../hero-form/hero-form.component';
-import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
-import { of } from 'rxjs';
 import { By } from '@angular/platform-browser';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { PowerService } from '../../services/power.service';
@@ -59,13 +55,11 @@ describe('HeroListComponent', () => {
     it('should apply filter to dataSource', () => {
         const filterInput = fixture.debugElement.query(By.css('input')).nativeElement;
         
-        // Set the value and dispatch a keyup event to simulate user typing
         filterInput.value = 'superman';
         filterInput.dispatchEvent(new Event('keyup'));
     
         fixture.detectChanges();
     
-        // Check if the dataSource filter is correctly set
         expect(component.dataSource.filter).toBe('superman');
     });
 

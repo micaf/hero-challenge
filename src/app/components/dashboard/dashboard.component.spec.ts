@@ -14,9 +14,7 @@ import { MaterialModule } from '../../shared/material.module';
 import { Power } from '../../models/power.model';
 import { Team } from '../../models/team.model';
 
-/**
- * Test suite for DashboardComponent.
- */
+
 describe('DashboardComponent', () => {
     let component: DashboardComponent;
     let fixture: ComponentFixture<DashboardComponent>;
@@ -24,12 +22,11 @@ describe('DashboardComponent', () => {
     let teamService: jasmine.SpyObj<TeamService>;
     let powerService: jasmine.SpyObj<PowerService>;
 
-    /** Mock data for heroes */
+
     const mockHeroes: ExtendedHero[] = [
         { id: 1, name: 'Clark Kent', alias: 'Superman', description: 'Description', gender: 'Masculino', powersIds: [1, 3], teamIds: [1, 2] }
     ];
 
-    /** Mock data for teams */
     const mockTeams: Team[] = [
         {
             id: 1,
@@ -38,7 +35,6 @@ describe('DashboardComponent', () => {
         }
     ];
 
-    /** Mock data for powers */
     const mockPowers: Power[] = [
         {
             id: 1,
@@ -47,9 +43,6 @@ describe('DashboardComponent', () => {
         }
     ];
 
-    /**
-     * Setup and initialization for the test suite.
-     */
     beforeEach(waitForAsync(() => {
         const heroServiceSpy = jasmine.createSpyObj('HeroService', ['getHeroes', 'deleteHero', 'addHero', 'updateHero']);
         const teamServiceSpy = jasmine.createSpyObj('TeamService', ['getTeamsByIds']);
@@ -77,16 +70,12 @@ describe('DashboardComponent', () => {
         component = fixture.componentInstance;
     }));
 
-    /**
-     * Test case for component creation.
-     */
+   
     it('should create', () => {
         expect(component).toBeTruthy();
     });
 
-    /**
-     * Test case to verify that heroes load on initialization.
-     */
+  
     it('should load heroes on initialization', () => {
         heroService.getHeroes.and.returnValue(of(mockHeroes));
         teamService.getTeamsByIds.and.returnValue(of(mockTeams));
@@ -98,9 +87,7 @@ describe('DashboardComponent', () => {
         expect(component.heroes.length).toBe(1);
     });
 
-    /**
-     * Test case for adding a hero when addHero event is emitted.
-     */
+ 
     it('should add a hero when addHero event is emitted', fakeAsync(() => {
         const newHero = { id: 1, name: 'Clark Kent', alias: 'Superman', description: 'Description', gender: 'Masculino', powersIds: [1, 3], teamIds: [1, 2] };
 
@@ -123,9 +110,7 @@ describe('DashboardComponent', () => {
         expect(component.heroes.length).toBe(1);
     }));
 
-    /**
-     * Test case for deleting a hero when deleteHero event is emitted.
-     */
+
     it('should delete a hero when deleteHero event is emitted', fakeAsync(() => {
         const heroToDeleteId = 1;
         component.heroes = [
@@ -150,9 +135,6 @@ describe('DashboardComponent', () => {
         expect(component.heroes.length).toBe(0);
     }));
 
-    /**
-     * Test case for editing a hero and moving it to the beginning of the list.
-     */
     it('should edit a hero and move it to the beginning of the list', fakeAsync(() => {
         const editedHero: ExtendedHero = { ...mockHeroes[0], name: 'Superman Edited' };
         component.heroes = [...mockHeroes];
@@ -174,9 +156,6 @@ describe('DashboardComponent', () => {
         expect(component.heroes[0].name).toBe('Superman Edited');
     }));
 
-    /**
-     * Test case for handling errors gracefully in getAllHeroes.
-     */
     it('should handle error in getAllHeroes gracefully', fakeAsync(() => {
         heroService.getHeroes.and.returnValue(throwError(() => new Error('Error fetching heroes')));
         spyOn(console, 'error');

@@ -7,27 +7,17 @@ import { TeamService } from '../../services/team.service';
 import { PowerService } from '../../services/power.service';
 import { LoadingService } from '../../services/loading.service';
 
-/**
- * Dashboard component displaying a list of heroes and their respective teams and powers.
- */
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements AfterViewInit {
-  /**
-   * List of heroes with their teams and powers.
-   */
-  heroes!: ExtendedHero[];
 
-  /**
-   * Indicates whether the component is loading results.
-   */
+  heroes!: ExtendedHero[];
   isLoading$: Observable<boolean>;
 
   /**
-   * Initializes services for hero, team, power operations, and dialog management.
    * @param heroService Service for hero data operations.
    * @param teamService Service for team data operations.
    * @param powerService Service for power data operations.
@@ -38,23 +28,15 @@ export class DashboardComponent implements AfterViewInit {
     private powerService: PowerService,
     private loadingService: LoadingService,
     private changeDetectorRef: ChangeDetectorRef
-  ) { 
+  ) {
     this.isLoading$ = this.loadingService.loading$;
   }
 
-  /**
-   * Lifecycle hook called after the component's view has been initialized.
-   * Calls `getAllHeroes` to load heroes' data.
-   */
   ngAfterViewInit(): void {
     this.getAllHeroes();
     this.changeDetectorRef.detectChanges();
   }
 
-  /**
-   * Fetches all heroes along with their associated teams and powers.
-   * Updates the `heroes` array with the fetched data.
-   */
   getAllHeroes() {
     this.heroService.getHeroes().pipe(
       switchMap((heroes) => {
@@ -83,8 +65,6 @@ export class DashboardComponent implements AfterViewInit {
   }
 
   /**
-   * Deletes a hero by ID.
-   * Updates the `heroes` array by removing the deleted hero.
    * @param heroId The ID of the hero to delete.
    */
   deleteHero(heroId: number): void {
@@ -94,7 +74,6 @@ export class DashboardComponent implements AfterViewInit {
   }
 
   /**
-   * Adds a new hero to the list.
    * @param hero The hero data to add.
    */
   addHero(hero: any) {

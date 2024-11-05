@@ -31,7 +31,6 @@ export class LoadingInterceptor implements HttpInterceptor {
       tap(
         (event: HttpEvent<any>) => {
           if (event instanceof HttpResponse && showLoading) {
-            // Optionally handle success logic here
           }
         },
         (error: HttpErrorResponse) => {
@@ -41,15 +40,13 @@ export class LoadingInterceptor implements HttpInterceptor {
         }
       ),
       catchError((error) => {
-        // Handle error response and stop loading indicator
         if (showLoading) {
           this.loadingService.setLoading(false);
         }
-        return of(error); // Return an observable to complete the stream
+        return of(error); 
       }),
       finalize(() => {
         if (showLoading) {
-          // Delay hiding the loading indicator to allow smooth component transition
           of(null).pipe(delay(600)).subscribe(() => this.loadingService.setLoading(false));
         }
       })

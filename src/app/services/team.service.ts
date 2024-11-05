@@ -15,10 +15,6 @@ export class TeamService {
 
   constructor(private http: HttpClient) {}
 
-
-  /**
-   * Obtener todos los equipos.
-   */
   getTeams(): Observable<Team[]> {
     return this.http.get<Team[]>(this.teamsUrl)
       .pipe(
@@ -29,7 +25,6 @@ export class TeamService {
 
 
   /**
-   * Obtener equipos por una lista de IDs.
    * @param ids Array de identificadores de equipos.
    */
   getTeamsByIds(ids: number[]): Observable<Team[]> {
@@ -41,13 +36,11 @@ export class TeamService {
 
 
   /**
-   * Buscar equipos por nombre.
    * @param term Término de búsqueda.
    */
 
   searchTeams(term: string): Observable<Team[]> {
     if (!term.trim()) {
-      // Si el término está vacío, devuelve un array vacío.
       return of([]);
     }
     return this.http.get<Team[]>(this.teamsUrl).pipe(
@@ -63,7 +56,6 @@ export class TeamService {
 
 
     /**
-   * Manejo de errores.
    * @param operation Operación donde ocurrió el error.
    * @param result Resultado opcional para devolver en caso de error.
    */
