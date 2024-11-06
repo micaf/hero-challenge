@@ -35,7 +35,7 @@ export class HeroService {
     const url = `${this.heroesUrl}/${id}`;
     return this.http.get<BaseHero>(url).pipe(
       delay(300),
-      tap(() => console.log('getHero') ),
+      tap(() => console.log('getHero')),
       catchError(this.handleError<BaseHero>(`getHero id=${id}`))
     );
   }
@@ -66,7 +66,9 @@ export class HeroService {
     );
   }
 
-
+  /**
+     * @param hero 
+     */
   addHero(hero: BaseHero): Observable<BaseHero> {
     return this.http.post<BaseHero>(this.heroesUrl, hero, this.httpOptions).pipe(
       tap((newHero: BaseHero) => console.log(`added hero w/ id=${newHero.id}`)),
@@ -74,7 +76,9 @@ export class HeroService {
     );
   }
 
-
+  /**
+      * @param id 
+      */
   deleteHero(id: number): Observable<BaseHero> {
     const url = `${this.heroesUrl}/${id}`;
 
@@ -84,6 +88,9 @@ export class HeroService {
     );
   }
 
+  /**
+    * @param hero
+    */
   updateHero(hero: BaseHero): Observable<any> {
     return this.http.put(this.heroesUrl, hero, this.httpOptions).pipe(
       tap(_ => console.log(`updated hero id=${hero.id}`)),

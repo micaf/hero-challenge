@@ -170,17 +170,15 @@ describe('DashboardComponent', () => {
     }));
 
     it('should map team and power names in heroes', fakeAsync(() => {
-        // Adjusted mock data for consistency with hero's IDs
         const mockTeams: Team[] = [
-            { id: 1, name: 'Avengers', members: [1] }, // Ensure team ID matches hero's teamIds
+            { id: 1, name: 'Avengers', members: [1] }, 
         ];
     
         const mockPowers: Power[] = [
             { id: 1, name: 'Super Strength', description: 'Ability to exert extraordinary physical force.' },
-            { id: 3, name: 'Flight', description: 'Ability to fly.' }, // Adding power with ID 3 to match mockHeroes
+            { id: 3, name: 'Flight', description: 'Ability to fly.' }, 
         ];
-    
-        // Set up spies to return consistent mock data
+
         heroService.getHeroes.and.returnValue(of(mockHeroes));
         teamService.getTeamsByIds.and.returnValue(of(mockTeams));
         powerService.getPowersByIds.and.returnValue(of(mockPowers));
@@ -188,29 +186,28 @@ describe('DashboardComponent', () => {
         component.getAllHeroes();
         tick();
     
-        // Check that the team and power names are mapped correctly
-        expect(component.heroes[0].teamNames).toEqual(['Avengers']); // Expect 1 team name
-        expect(component.heroes[0].powerNames).toEqual(['Super Strength', 'Flight']); // Expect 2 power names
+        expect(component.heroes[0].teamNames).toEqual(['Avengers']); 
+        expect(component.heroes[0].powerNames).toEqual(['Super Strength', 'Flight']); 
     }));
     
     it('should display the loading spinner when isLoading$ is true', fakeAsync(() => {
         const loadingService = TestBed.inject(LoadingService);
-        loadingService.setLoading(true); // Simulate loading state
+        loadingService.setLoading(true); 
     
         fixture.detectChanges();
     
         const spinner = fixture.debugElement.query(By.css('mat-spinner'));
-        expect(spinner).toBeTruthy(); // Spinner should be visible
+        expect(spinner).toBeTruthy(); 
     }));
     
     it('should hide the loading spinner when isLoading$ is false', fakeAsync(() => {
         const loadingService = TestBed.inject(LoadingService);
-        loadingService.setLoading(false); // Simulate not loading
+        loadingService.setLoading(false); 
     
         fixture.detectChanges();
     
         const spinner = fixture.debugElement.query(By.css('mat-spinner'));
-        expect(spinner).toBeFalsy(); // Spinner should not be visible
+        expect(spinner).toBeFalsy(); 
     }));
     
 });
