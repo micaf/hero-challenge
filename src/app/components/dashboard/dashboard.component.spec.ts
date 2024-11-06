@@ -13,6 +13,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from '../../shared/material.module';
 import { Power } from '../../models/power.model';
 import { Team } from '../../models/team.model';
+import { LoadingService } from '../../services/loading.service';
 
 
 describe('DashboardComponent', () => {
@@ -167,4 +168,49 @@ describe('DashboardComponent', () => {
         expect(console.error).toHaveBeenCalledWith(jasmine.any(Error));
         expect(component.heroes).toEqual([]);
     }));
+
+    it('should map team and power names in heroes', fakeAsync(() => {
+        // Adjusted mock data for consistency with hero's IDs
+        const mockTeams: Team[] = [
+            { id: 1, name: 'Avengers', members: [1] }, // Ensure team ID matches hero's teamIds
+        ];
+    
+        const mockPowers: Power[] = [
+            { id: 1, name: 'Super Strength', description: 'Ability to exert extraordinary physical force.' },
+            { id: 3, name: 'Flight', description: 'Ability to fly.' }, // Adding power with ID 3 to match mockHeroes
+        ];
+    
+        // Set up spies to return consistent mock data
+        heroService.getHeroes.and.returnValue(of(mockHeroes));
+        teamService.getTeamsByIds.and.returnValue(of(mockTeams));
+        powerService.getPowersByIds.and.returnValue(of(mockPowers));
+    
+        component.getAllHeroes();
+        tick();
+    
+        // Check that the team and power names are mapped correctly
+        expect(component.heroes[0].teamNames).toEqual(['Avengers']); // Expect 1 team name
+        expect(component.heroes[0].powerNames).toEqual(['Super Strength', 'Flight']); // Expect 2 power names
+    }));
+    
+    it('should display the loading spinner when isLoading$ is true', fakeAsync(() => {
+        const loadingService = TestBed.inject(LoadingService);
+        loadingService.setLoading(true); // Simulate loading state
+    
+        fixture.detectChanges();
+    
+        const spinner = fixture.debugElement.query(By.css('mat-spinner'));
+        expect(spinner).toBeTruthy(); // Spinner should be visible
+    }));
+    
+    it('should hide the loading spinner when isLoading$ is false', fakeAsync(() => {
+        const loadingService = TestBed.inject(LoadingService);
+        loadingService.setLoading(false); // Simulate not loading
+    
+        fixture.detectChanges();
+    
+        const spinner = fixture.debugElement.query(By.css('mat-spinner'));
+        expect(spinner).toBeFalsy(); // Spinner should not be visible
+    }));
+    
 });

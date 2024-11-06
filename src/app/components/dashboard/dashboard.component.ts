@@ -53,9 +53,9 @@ export class DashboardComponent implements AfterViewInit {
       next: ({ heroes, teams, powers }) => {
         this.heroes = heroes.map(hero => ({
           ...hero,
-          teamNames: hero.teamIds?.map(id => teams.find(team => team.id === id)?.name),
-          powerNames: hero.powersIds.map(id => powers.find(power => power.id === id)?.name)
-        } as ExtendedHero));
+          teamNames: hero.teamIds?.map(id => teams.find(team => team.id === id)?.name).filter(name => name),
+          powerNames: hero.powersIds.map(id => powers.find(power => power.id === id)?.name).filter(name => name)
+      } as ExtendedHero));
       },
       error: (err) => {
         console.error(err);

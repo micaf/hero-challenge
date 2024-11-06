@@ -11,14 +11,12 @@ import { Team } from '../../models/team.model';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from '../../shared/material.module';
 
-
 describe('HeroFormComponent', () => {
   let component: HeroFormComponent;
   let fixture: ComponentFixture<HeroFormComponent>;
   let powerService: jasmine.SpyObj<PowerService>;
   let teamService: jasmine.SpyObj<TeamService>;
   let dialogRef: jasmine.SpyObj<MatDialogRef<HeroFormComponent>>;
-
 
   const mockPowers: Power[] = [
     { id: 1, name: 'Super Strength', description: 'Ability to exert extraordinary physical force.' },
@@ -47,7 +45,7 @@ describe('HeroFormComponent', () => {
 
     TestBed.configureTestingModule({
       imports: [
-        HeroFormComponent, 
+        HeroFormComponent,
         ReactiveFormsModule,
         MaterialModule,
         BrowserAnimationsModule
@@ -65,7 +63,6 @@ describe('HeroFormComponent', () => {
     teamService = TestBed.inject(TeamService) as jasmine.SpyObj<TeamService>;
     dialogRef = TestBed.inject(MatDialogRef) as jasmine.SpyObj<MatDialogRef<HeroFormComponent>>;
   }));
-
 
   beforeEach(() => {
     powerService.getPowers.and.returnValue(of(mockPowers));
@@ -99,7 +96,17 @@ describe('HeroFormComponent', () => {
     expect(component.teamTypeOptions).toEqual(mockTeams);
   }));
 
-  it('should validate that name and alias only allow letters without spaces', () => {
+  it('should validate that form is invalid if required fields are missing', () => {
+    component.heroForm.controls['name'].setValue('');
+    component.heroForm.controls['alias'].setValue('');
+    component.heroForm.controls['gender'].setValue('');
+    component.heroForm.controls['powersIds'].setValue([]);
+    component.heroForm.controls['teamIds'].setValue([]);
+
+    expect(component.heroForm.valid).toBeFalse();
+  });
+
+  it('should validate that name and alias only allow letters without special characters', () => {
     const nameControl = component.heroForm.get('name');
     const aliasControl = component.heroForm.get('alias');
 
@@ -131,20 +138,69 @@ describe('HeroFormComponent', () => {
     component.onSubmit();
 
     expect(dialogRef.close).toHaveBeenCalledWith(jasmine.objectContaining({
-      name: 'BruceWayne',
-      alias: 'Batman',
-      powersIds: [1, 2],
-      teamIds: [1, 2]
+      action: 'edit',
+      data: jasmine.objectContaining({
+        name: 'BruceWayne',
+        alias: 'Batman',
+        description: 'Description',
+        gender: 'Masculino',
+        powersIds: [1, 2],
+        teamIds: [1, 2],
+        powerNames: ['Super Strength', 'Telepathy'],
+        teamNames: ['Avengers', 'Justice League']
+      })
     }));
   });
 
   it('should not close the dialog if form is invalid', () => {
-    component.heroForm.controls['name'].setValue('');  
+    component.heroForm.controls['name'].setValue('');
     component.onSubmit();
     expect(dialogRef.close).not.toHaveBeenCalled();
   });
 
   it('should call onCancel and close the dialog with null', () => {
-    expect(dialogRef.close).toHaveBeenCalledWith(null);
+    component.onCancel();
+    expect(dialogRef.close).toHaveBeenCalledWith({ action: 'close', data: null });
   });
+
+  it('should set power and team options correctly after loading data', () => {
+    expect(component.powerTypeOptions.length).toBe(2);
+    expect(component.teamTypeOptions.length).toBe(2);
+    expect(component.powerTypeOptions).toEqual(mockPowers);
+    expect(component.teamTypeOptions).toEqual(mockTeams);
+  });
+
+  it('should handle case where hero has no ID and action is "add"', () => {
+    component.hero = null;
+    component.heroForm.setValue({
+      name: 'Diana Prince',
+      alias: 'Wonder Woman',
+      description: 'Amazonian Warrior',
+      gender: 'Femenino',
+      powersIds: [1],
+      teamIds: [1]
+    });
+
+    component.onSubmit();
+
+    expect(dialogRef.close).toHaveBeenCalledWith(jasmine.objectContaining({
+      action: 'add',
+      data: jasmine.objectContaining({
+        name: 'Diana Prince',
+        alias: 'Wonder Woman',
+        description: 'Amazonian Warrior',
+        gender: 'Femenino',
+        powersIds: [1],
+        teamIds: [1]
+      })
+    }));
+  });
+
+  it('should not close the dialog if form is invalid', () => {
+    component.heroForm.controls['name'].setValue('');
+    component.onSubmit();
+    expect(dialogRef.close).not.toHaveBeenCalled();
+  });
+
+
 });

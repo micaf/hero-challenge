@@ -27,7 +27,7 @@
                 <button mat-icon-button (click)="openHeroForm($event, element)">
                     <mat-icon>edit</mat-icon>
                 </button>
-                <button mat-icon-button color="warn" (click)="openDeleteConfirmation($event, element.id)">
+                <button data-testid="edit-button" mat-icon-button color="warn" (click)="openDeleteConfirmation($event, element.id)">
                     <mat-icon>delete</mat-icon>
                 </button>
             </td>

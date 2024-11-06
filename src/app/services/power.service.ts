@@ -15,9 +15,6 @@ export class PowerService {
 
   constructor(private http: HttpClient) {}
 
-  /**
-   * Obtener todos los poderes.
-   */
   getPowers(): Observable<Power[]> {
     return this.http.get<Power[]>(this.powerUrl)
       .pipe(
@@ -27,8 +24,7 @@ export class PowerService {
   }
 
   /**
-   * Obtener poderes por una lista de IDs.
-   * @param ids Array de identificadores de poderes.
+   * @param ids 
    */
   getPowersByIds(ids: number[]): Observable<Power[]> {
     return this.http.get<Power[]>(this.powerUrl).pipe(
@@ -38,12 +34,10 @@ export class PowerService {
   }
   
   /**
-   * Buscar poderes por nombre.
-   * @param term Término de búsqueda.
+   * @param term 
    */
   searchPowers(term: string): Observable<Power[]> {
     if (!term.trim()) {
-      // Si el término está vacío, devuelve un array vacío.
       return of([]);
     }
     return this.http.get<Power[]>(this.powerUrl).pipe(
@@ -59,9 +53,8 @@ export class PowerService {
   }
 
   /**
-   * Manejo de errores.
-   * @param operation Operación donde ocurrió el error.
-   * @param result Resultado opcional para devolver en caso de error.
+   * @param operation 
+   * @param result 
    */
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
