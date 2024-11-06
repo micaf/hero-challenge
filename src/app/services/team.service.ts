@@ -25,7 +25,7 @@ export class TeamService {
 
 
   /**
-   * @param ids Array de identificadores de equipos.
+   * @param ids 
    */
   getTeamsByIds(ids: number[]): Observable<Team[]> {
     return this.http.get<Team[]>(this.teamsUrl).pipe(
@@ -36,7 +36,7 @@ export class TeamService {
 
 
   /**
-   * @param term Término de búsqueda.
+   * @param term 
    */
 
   searchTeams(term: string): Observable<Team[]> {
@@ -56,8 +56,8 @@ export class TeamService {
 
 
     /**
-   * @param operation Operación donde ocurrió el error.
-   * @param result Resultado opcional para devolver en caso de error.
+   * @param operation 
+   * @param result
    */
     private handleError<T>(operation = 'operation', result?: T) {
       return (error: any): Observable<T> => {

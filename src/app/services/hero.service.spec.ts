@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { HeroService } from './hero.service';
 import { BaseHero } from '../models/hero.model';
-import { HttpResponse } from '@angular/common/http';
+import { HttpResponse, provideHttpClient } from '@angular/common/http';
 
 describe('HeroService', () => {
     let service: HeroService;
@@ -12,7 +12,8 @@ describe('HeroService', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule]
+            providers: [ provideHttpClient(),
+                provideHttpClientTesting()]
         });
 
         service = TestBed.inject(HeroService);
