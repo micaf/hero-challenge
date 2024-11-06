@@ -8,8 +8,6 @@ import { HeroFormComponent } from '../hero-form/hero-form.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { MaterialModule } from '../../shared/material.module';
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-
 
 @Component({
     selector: 'app-hero-list',

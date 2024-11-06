@@ -4,8 +4,6 @@ import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dial
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-
 import { HeroListComponent } from './hero-list.component';
 import { MOCK_HEROES } from '../../mocks/mock-heroes';
 import { MaterialModule } from '../../shared/material.module';
@@ -27,7 +25,6 @@ describe('HeroListComponent', () => {
                 MatDialogModule,
                 MatPaginatorModule,
                 BrowserAnimationsModule,
-                HttpClientTestingModule,
             ],
             providers: [
                 { provide: MatDialog, useValue: dialogSpy }, 
@@ -66,7 +63,6 @@ describe('HeroListComponent', () => {
     }));
 
     it('should emit editHero when clicking the edit icon and confirming', fakeAsync(() => {
-        // Spy on the editHero output emitter
         const editHeroSpy = spyOn(component.editHero, 'emit');
         const editedHero = {
             id: 1,
@@ -78,19 +74,14 @@ describe('HeroListComponent', () => {
             teamIds: [1, 2]
         };
 
-        // Setup the MatDialog mock
-        // Mock MatDialog open method
         const dialogSpy = spyOn(component['dialog'], 'open').and.returnValue({
-            afterClosed: () => of({ action: 'edit', data: editedHero }) // Simulate add confirmation
+            afterClosed: () => of({ action: 'edit', data: editedHero }) 
         } as MatDialogRef<any>);
 
-
-        // Provide initial data so the table and button render
         component.dataSource.data = MOCK_HEROES;
         fixture.detectChanges();
-        tick(); // Ensure data is loaded and table is rendered
+        tick(); 
 
-        // Select the edit button
         const editButton = fixture.debugElement.query(
             By.css('tbody tr:nth-child(1) td.mat-column-actions button')
         );
@@ -98,16 +89,14 @@ describe('HeroListComponent', () => {
         fixture.detectChanges();
         tick();
 
-
-        // Assertions to check dialog was opened and event emitted
-        expect(dialogSpy).toHaveBeenCalled(); // Confirm the dialog opened
-        expect(editHeroSpy).toHaveBeenCalledWith(editedHero); // Confirm emit with edited hero data
+        expect(dialogSpy).toHaveBeenCalled(); 
+        expect(editHeroSpy).toHaveBeenCalledWith(editedHero); 
     }));
 
     it('should emit deleteHero when clicking the delete icon and confirming', fakeAsync(() => {
         const deleteHeroSpy = spyOn(component.deleteHero, 'emit');
         const dialogSpy = spyOn(component['dialog'], 'open').and.returnValue({
-            afterClosed: () => of(true) // Simulate confirmation of deletion
+            afterClosed: () => of(true) 
         } as MatDialogRef<any>);
 
         component.dataSource.data = MOCK_HEROES;
@@ -117,19 +106,18 @@ describe('HeroListComponent', () => {
         const deleteButton = fixture.debugElement.query(By.css('button[color="warn"]'));
         expect(deleteButton).toBeTruthy();
 
-        deleteButton.nativeElement.click(); // Simulate click on delete icon
+        deleteButton.nativeElement.click(); 
         fixture.detectChanges();
         tick();
 
-        expect(dialogSpy).toHaveBeenCalled(); // Check if dialog opened
-        expect(deleteHeroSpy).toHaveBeenCalledWith(MOCK_HEROES[0].id); // Check if deleteHero emitted with correct ID
+        expect(dialogSpy).toHaveBeenCalled(); 
+        expect(deleteHeroSpy).toHaveBeenCalledWith(MOCK_HEROES[0].id); 
     }));
 
     it('should emit addHero when clicking the add button', fakeAsync(() => {
         const addHeroSpy = spyOn(component.addHero, 'emit');
         const newHero = { id: 99, name: 'New Hero', alias: 'NEW', description: 'A new hero', gender: 'Masculino', powersIds: [1], teamIds: [1] };
 
-        // Mock MatDialog open method
         const dialogSpy = spyOn(component['dialog'], 'open').and.returnValue({
             afterClosed: () => of({ action: 'add', data: newHero }) // Simulate add confirmation
         } as MatDialogRef<any>);
@@ -137,16 +125,14 @@ describe('HeroListComponent', () => {
         fixture.detectChanges();
         tick();
 
-        // Click the add button
         const addButton = fixture.debugElement.query(By.css('.table-actions button'));
         expect(addButton).toBeTruthy();
         addButton.nativeElement.click();
         fixture.detectChanges();
         tick();
 
-        // Verify that MatDialog.open was called and addHero was emitted
-        expect(dialogSpy).toHaveBeenCalled(); // Ensure the dialog opened
-        expect(addHeroSpy).toHaveBeenCalledWith(newHero); // Ensure addHero emitted with correct data
+        expect(dialogSpy).toHaveBeenCalled(); 
+        expect(addHeroSpy).toHaveBeenCalledWith(newHero); 
     }));
 
 
@@ -158,7 +144,6 @@ describe('HeroListComponent', () => {
         const filterInput = fixture.debugElement.query(By.css('.filter-input input'));
         expect(filterInput).toBeTruthy();
 
-        // Set the value and dispatch the keyup event
         filterInput.nativeElement.value = 'Elektra';
         filterInput.nativeElement.dispatchEvent(new KeyboardEvent('keyup', { key: 'e' })); // Trigger 'keyup' event
 
